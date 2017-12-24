@@ -26,6 +26,8 @@ machine = TocMachine(
         'no1',
         'no2',
         'no3',
+        'ososos',
+        'askpressure',
     ],
     transitions=[
         
@@ -119,6 +121,27 @@ machine = TocMachine(
             'trigger' : 'advance',
             'source': 'notrasher',
             'dest': 'notrasher'
+        },
+
+        {
+            'trigger' : 'advance',
+            'source': 'askwhy',
+            'dest':'askdicision',
+            'conditions':'is_going_to_askdicision'
+        },
+
+        {
+            'trigger' : 'advance',
+            'source' : 'askwhy',
+            'dest' : 'askpressure',
+            'conditions':'is_going_to_askpressure'
+        },
+
+        {
+            'trigger' : 'advance',
+            'source' : 'askwhy',
+            'dest' : 'ososos',
+            'conditions' : 'is_going_to_OS'
         }
 
     ],

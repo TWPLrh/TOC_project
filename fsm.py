@@ -64,9 +64,21 @@ class TocMachine(Machine):
         text = update.message.text
         return text.lower() == 'a'
 
-    def is_going_to_notrasher(self, update):
+    def is_going_to_notrasher(self, update): #可能要再加
         text = update.message.text
         return text.lower() == 'b'
+
+    def is_going_to_askdicision(self, update):
+        text = update.message.text
+        return text.lower() == 'a'
+
+    def is_going_to_askpressure(self, update):
+        text = update.message.text
+        return text.lower() == 'b'
+
+    def is_going_to_OS(self, update):
+        text = update.message.text
+        return text.lower() == 'c'
 
     def on_enter_ask(self, update):
         update.message.reply_text("Allakhuaguak！想來一場轟轟烈烈的大爆炸嗎？\n(a.)想\n(b.)不想")
@@ -102,4 +114,22 @@ class TocMachine(Machine):
         update.message.reply_text("抱歉，我們不提供庸人資源。")
 
     def on_exit_notrasher(self, update):
+        pass
+
+    def on_enter_askdicision(self, update):
+        update.message.reply_text("你擁有成為聖戰士的決心嗎？")
+
+    def on_exit_askdicision(self, update):
+        pass
+
+    def on_enter_askpressure(self, update):
+        update.message.reply_text("真主最擅長治癒病痛了！壓力大嗎？")
+
+    def on_exit_askpreesure(self, update):
+        pass
+
+    def on_enter_ososos(self, update):
+        update.message.reply_text("這種真主真的沒辦法！但你想炸掉OS老師的腦袋嗎？")
+
+    def on_exit_ososos(self, update):
         pass
