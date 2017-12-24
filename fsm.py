@@ -1,6 +1,8 @@
+#!usr/bin/env python
+#coding=utf-8
 
-from transitions.extensions import GraphMachine as Machine
-
+#from transitions.extensions import GraphMachine as Machine
+from transitions import Machine
 
 class TocMachine(Machine):
     def __init__(self, **machine_configs):
