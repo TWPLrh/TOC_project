@@ -25,7 +25,7 @@ class TocMachine(Machine):
 
     def on_enter_state1(self, update):
         update.message.reply_text("I'm entering state1")
-#        self.go_back(update)
+        self.go_back(update)
 
     def on_exit_state1(self, update):
         update.message.reply_text("???")
@@ -44,13 +44,19 @@ class TocMachine(Machine):
         update.message.reply_text("WLWLW")
         self.go_back(update)
 
-
-
     def is_going_to_ask(self, update):
         text = update.message.text
         return True
 
-    def is_going_to_no(self, update):
+    def is_going_to_no1(self, update):
+        text = update.message.text
+        return text.lower() == 'b'
+
+    def is_going_to_no2(self, update):
+        text = update.message.text
+        return text.lower() == 'b'
+
+    def is_going_to_no3(self, update):
         text = update.message.text
         return text.lower() == 'b'
 
@@ -58,12 +64,9 @@ class TocMachine(Machine):
         text = update.message.text
         return text.lower() == 'a'
 
-    def on_enter_no(self, update):
-        update.message.reply_text("NO? Are you SURE ?????? ")
-        self.go_back(update)
-
-    def on_exit_no(self, update):
-        update.message.reply_text("Allakhuaguak！Fuck you jesus")
+    def is_going_to_notrasher(self, update):
+        text = update.message.text
+        return text.lower() == 'b'
 
     def on_enter_ask(self, update):
         update.message.reply_text("Allakhuaguak！想來一場轟轟烈烈的大爆炸嗎？\n(a.)想\n(b.)不想")
@@ -71,9 +74,32 @@ class TocMachine(Machine):
     def on_exit_ask(self, update):
         pass
 
+    def on_enter_no1(self, update):
+        update.message.reply_text("什麼？你說不想？")
+
+    def on_exit_no1(self, update):
+        pass
+
+    def on_enter_no2(self, update):
+        update.message.reply_text("你再說一次不想試試看阿！")
+
+    def on_exit_no2(self, update):
+        pass
+
+    def on_enter_no3(self, update):
+        update.message.reply_text("給你最後一次機會 想或不想？")
+
+    def on_exit_no3(self, update):
+        pass
+
     def on_enter_askwhy(self, update):
         update.message.reply_text("為什麼想要爆炸呢？\n(a.)就只是想炸\n(b.)心情不好\n(c.)亦轉身os炸開")
 
     def on_exit_askwhy(self, update):
         pass
-        
+
+    def on_enter_notrasher(self, update):
+        update.message.reply_text("抱歉，我們不提供庸人資源。")
+
+    def on_exit_notrasher(self, update):
+        pass

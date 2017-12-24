@@ -8,7 +8,7 @@ from flask import Flask, request, send_file
 from fsm import TocMachine
 
 API_TOKEN = '504232298:AAGAPYhVAKKO5UpPHay3oXR4ce9af1EdLUk'
-WEBHOOK_URL = 'https://aa4890d9.ngrok.io/hook'
+WEBHOOK_URL = 'https://1335317e.ngrok.io/hook'
 
 app = Flask(__name__)
 bot = telegram.Bot(token=API_TOKEN)
@@ -23,7 +23,9 @@ machine = TocMachine(
         'askdicision',
         'askmission',
         'notrasher',
-        'no'
+        'no1',
+        'no2',
+        'no3',
     ],
     transitions=[
         
@@ -51,8 +53,7 @@ machine = TocMachine(
             'trigger': 'go_back',
             'source': [
                 'state1',
-                'state2',
-                'no',
+                'state2'
             ],
             'dest': 'user'
         },
@@ -67,15 +68,57 @@ machine = TocMachine(
         {
             'trigger': 'advance',
             'source': 'ask',
+            'dest': 'no1',
+            'conditions': 'is_going_to_no1'
+        },
+
+        {
+            'trigger': 'advance',
+            'source': 'ask',
             'dest': 'askwhy',
             'conditions': 'is_going_to_askwhy'
         },
 
         {
             'trigger': 'advance',
-            'source': 'ask',
-            'dest': 'no',
-            'conditions': 'is_going_to_no'
+            'source': 'no1',
+            'dest': 'no2',
+            'conditions': 'is_going_to_no2'
+        },
+
+        {
+            'trigger': 'advance',
+            'source': 'no1',
+            'dest': 'askwhy',
+            'conditions': 'is_going_to_askwhy'
+                
+        },
+
+        {
+            'trigger': 'advance',
+            'source': 'no2',
+            'dest': 'no3',
+            'conditions': 'is_going_to_no3'
+        },
+
+        {
+            'trigger': 'advance',
+            'source': 'no2',
+            'dest': 'askwhy',
+            'conditions': 'is_going_to_askwhy'
+        },
+
+        {
+            'trigger': 'advance',
+            'source': 'no3',
+            'dest': 'notrasher',
+            'conditions': 'is_going_to_notrasher'
+        },
+
+        {
+            'trigger' : 'advance',
+            'source': 'notrasher',
+            'dest': 'notrasher'
         }
 
     ],
