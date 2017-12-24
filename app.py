@@ -7,8 +7,8 @@ from flask import Flask, request, send_file
 
 from fsm import TocMachine
 
-API_TOKEN = '504232298:AAGAPYhVAKKO5UpPHay3oXR4ce9af1EdLUk'
-WEBHOOK_URL = 'https://1335317e.ngrok.io/hook'
+API_TOKEN = '470479128:AAENFEglNPFqsFFAGzBKbLL6xR3G8QcjulI'
+WEBHOOK_URL = 'https://2ac5cdf8.ngrok.io/mybot'
 
 app = Flask(__name__)
 bot = telegram.Bot(token=API_TOKEN)
@@ -59,7 +59,7 @@ machine = TocMachine(
             ],
             'dest': 'user'
         },
-        
+    
         {
             'trigger': 'advance',
             'source': 'user',
@@ -90,7 +90,7 @@ machine = TocMachine(
 
         {
             'trigger': 'advance',
-            'source': 'no1',
+            'source': 'no2',
             'dest': 'askwhy',
             'conditions': 'is_going_to_askwhy'
                 
@@ -105,7 +105,7 @@ machine = TocMachine(
 
         {
             'trigger': 'advance',
-            'source': 'no2',
+            'source': 'no3',
             'dest': 'askwhy',
             'conditions': 'is_going_to_askwhy'
         },
@@ -142,8 +142,14 @@ machine = TocMachine(
             'source' : 'askwhy',
             'dest' : 'ososos',
             'conditions' : 'is_going_to_OS'
-        }
+        },
 
+        {
+            'trigger' : 'advance',
+            'source' : 'askdicision',
+            'dest': 'notrasher',
+            'conditions':'is_going_to_notrasher'
+        }
     ],
     initial='user'
 #    auto_transitions=False,
@@ -160,8 +166,8 @@ def _set_webhook():
         print('Your webhook URL has been set to "{}"'.format(WEBHOOK_URL))
 
 
-@app.route('/hook', methods=['POST'])
-def webhook_handler():
+@app.route('/mybot', methods=['POST'])
+def mybot():
     update = telegram.Update.de_json(request.get_json(force=True), bot)
     machine.advance(update)
     return 'ok'
