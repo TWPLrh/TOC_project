@@ -8,27 +8,46 @@ from flask import Flask, request, send_file
 from fsm import TocMachine
 
 API_TOKEN = '470479128:AAENFEglNPFqsFFAGzBKbLL6xR3G8QcjulI'
-WEBHOOK_URL = 'https://2ac5cdf8.ngrok.io/mybot'
+WEBHOOK_URL = 'https://70ace65c.ngrok.io/mybot'
 
 app = Flask(__name__)
 bot = telegram.Bot(token=API_TOKEN)
 machine = TocMachine(
     states=[
-        'user',
         'state1',
         'state2',
         'state3',
-        'ask',
-        'askwhy',
-        'askdicision',
-        'askmission',
+            
+        'user',
         'notrasher',
-        'no1',
-        'no2',
-        'no3',
-        'ososos',
-        'askpressure',
+
+        'ask',
+            'no1',
+            'no2',
+            'no3',
+            
+            'askwhy',
+                'askdicision',
+                    'askmission',
+                #########################
+                'askpressure',
+                    'tips',
+                        'tip1',
+                        'tip2',
+                        'tip3',
+                        'another',
+
+                    'retarded',
+                        'askwhatyoudo',
+                        'guao',
+                #########################
+                
+                'ososos',
+                    'keepAddress',
+                    'BePatient'
+
     ],
+
     transitions=[
         
         {
@@ -37,6 +56,7 @@ machine = TocMachine(
             'dest': 'state1',
             'conditions': 'is_going_to_state1'
         },
+
         {
             'trigger': 'advance',
             'source': 'user',
@@ -51,11 +71,13 @@ machine = TocMachine(
             'conditions': 'is_going_to_state3'
         },
         
+
         {
             'trigger': 'go_back',
             'source': [
                 'state1',
-                'state2'
+                'state2',
+                'guao'
             ],
             'dest': 'user'
         },
@@ -146,12 +168,141 @@ machine = TocMachine(
 
         {
             'trigger' : 'advance',
+            'source' : 'ososos',
+            'dest' : 'keepAddress',
+            'conditions' : 'is_going_to_keepAddress'
+            
+        },
+
+        {
+            'trigger' : 'advance',
+            'source' : 'ososos',
+            'dest': 'askwhatyoudo',
+            'conditions' : 'is_going_to_askwhatyoudo'
+        },
+
+        {
+            'trigger' : 'advance',
+            'source' : 'keepAddress',
+            'dest' : 'BePatient'
+        },
+
+        {
+            'trigger' : 'advance',
+            'source' : 'BePatient',
+            'dest' : 'BePatient'
+        },
+
+        {
+            'trigger' : 'advance',
             'source' : 'askdicision',
             'dest': 'notrasher',
             'conditions':'is_going_to_notrasher'
-        }
+        },
+
+        {   
+            'trigger' : 'advance',
+            'source' : 'askpressure',
+            'dest' : 'tips',
+            'conditions' : 'is_going_to_tips'
+        },
+
+        {
+            'trigger' : 'advance',
+            'source' : 'askpressure',
+            'dest' : 'retarded',
+            'conditions' : 'is_going_to_retarded'
+        },
+
+        {
+            'trigger' : 'advance',
+            'source' : 'retarded',
+            'dest' : 'askwhatyoudo',
+            'conditions' : 'is_going_to_askwhatyoudo'
+        },
+
+        {
+            'trigger' : 'advance',
+            'source' : 'askwhatyoudo',
+            'dest' : 'guao',
+        },
+
+        {
+            'trigger' : 'advance',
+            'source' : 'tips',
+            'dest' : 'tip1',
+            'conditions' : 'is_going_to_tip1'
+        },
+
+        {
+            'trigger' : 'advance',
+            'source' : 'tips',
+            'dest' : 'tip2',
+            'conditions' : 'is_going_to_tip2'
+                
+        },
+
+        {
+            'trigger' : 'advance',
+            'source' : 'tips',
+            'dest' : 'tip3',
+            'conditions' : 'is_going_to_tip3'
+        },
+
+        {
+            'trigger' : 'advance',
+            'source' : 'tips',
+            'dest' : 'another',
+            'conditions' : 'is_going_to_another'
+        },
+
+        {
+            'trigger' : 'advance',
+            'source' : 'tip1',
+            'dest' : 'another',
+            'conditions' : 'is_going_to_another'
+        },
+
+        {
+            'trigger' : 'advance',
+            'source' : 'tip2',
+            'dest' : 'another',
+            'conditions' : 'is_going_to_another'
+        },
+        
+        {
+            'trigger' : 'advance',
+            'source' : 'tip3',
+            'dest' : 'another',
+            'conditions' : 'is_going_to_another'
+        },
+
+        {
+            'trigger':'advance',
+            'source' : 'tip1',
+            'dest' : 'guao'
+        },
+
+        {
+            'trigger':'advance',
+            'source' : 'tip2',
+            'dest' : 'guao'
+        },
+
+        {
+            'trigger':'advance',
+            'source' : 'tip3',
+            'dest' : 'guao'
+        },
+
+        {
+            'trigger' : 'advance',
+            'source' : 'another',
+            'dest' : 'guao'
+        },
+
     ],
-    initial='user'
+    initial='user',
 #    auto_transitions=False,
 #    show_conditions=True,
 )
