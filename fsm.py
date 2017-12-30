@@ -3,6 +3,18 @@
 
 #from transitions.extensions import GraphMachine as Machine
 from transitions import Machine
+import time, _thread
+
+global Correct, counter, lock
+
+def my_timer(self, update):
+    global lock
+    lock = True
+    time.sleep(15)
+    self.go_back(update)
+
+Correct = 0
+counter = 0
 
 class TocMachine(Machine):
     def __init__(self, **machine_configs):
@@ -10,7 +22,7 @@ class TocMachine(Machine):
             model = self,
             **machine_configs
         )
-
+    """
     def is_going_to_state1(self, update):
         text = update.message.text
         return text.lower() == 'go to state1'
@@ -43,46 +55,66 @@ class TocMachine(Machine):
     def on_exit_state3(self, update):
         update.message.reply_text("WLWLW")
         self.go_back(update)
-
-    def is_going_to_ask(self, update):
-        text = update.message.text
-        return True
-
+    """
     def is_going_to_no1(self, update):
         text = update.message.text
-        return text.lower() == 'b'
+        return ( text.lower() == 'b' or text.lower() == '不想' or text.lower() == '否' )
 
     def is_going_to_no2(self, update):
         text = update.message.text
-        return text.lower() == 'b'
+        return ( text.lower() == 'b' or text.lower() == '不想' or text.lower() == '否')
 
     def is_going_to_no3(self, update):
         text = update.message.text
-        return text.lower() == 'b'
+        return ( text.lower() == 'b' or text.lower() == '不想' or text.lower() == '否')
 
     def is_going_to_askwhy(self, update):
         text = update.message.text
-        return text.lower() == 'a'
+        return ( text.lower() == 'a' or text.lower() == '想' or text.lower() == '是')
 
-    def is_going_to_notrasher(self, update): #可能要再加
+    def is_going_to_notrasher(self, update):
         text = update.message.text
-        return text.lower() == 'b'
+        return ( text.lower() == 'b' or text.lower() == '不想' or text.lower() == '否' )
 
     def is_going_to_askdicision(self, update):
         text = update.message.text
-        return text.lower() == 'a'
+        return ( text.lower() == 'a' or text.lower() == '就只是想炸')
+
+    def is_going_to_askmission(self, update):
+        text = update.message.text 
+        return ( text.lower () == 'a' or text.lower() == '是' or text.lower() == '知' or text.lower== '有')
+
+    def is_going_to_tellmission(self, update):
+        text = update.message.text
+        return ( text.lower () == 'b' or text.lower() == '否')
+
+    def is_going_to_quiz(self, update):
+        text = update.message.text
+        return ( text.lower () == 'a' or text.lower() == '是' or text.lower() == '想')
+
+    def is_going_to_practice(self, update):
+        text = update.message.text
+        return (text.lower () == '我想再複習一次教義')
+
+    def is_going_to_practicemore(self, update):
+        text = update.message.text
+        return text == '我想更瞭解教義'
+
+    def is_going_to_quizstart(self, update):
+        text = update.message.text
+        return text != '我想更瞭解教義'
 
     def is_going_to_askpressure(self, update):
         text = update.message.text
-        return text.lower() == 'b'
+        return (text.lower() == 'b' or text.lower() == '心情不好')
 
     def is_going_to_OS(self, update):
         text = update.message.text
-        return text.lower() == 'c'
+        return (text.lower() == 'c' or text.lower() == '亦轉身OS爆開')
 
     def is_going_to_tips(self, update):
         text = update.message.text
-        return (text.lower() == 'a')
+        return ( text.lower() == 'a' or text.lower == '是' or text.lower == '大')
 
     def is_going_to_tip1(self, update):
         text = update.message.text
@@ -98,19 +130,19 @@ class TocMachine(Machine):
 
     def is_going_to_another(self, update):
         text = update.message.text
-        return text.lower() == 'd'
+        return ( text.lower() == 'd' or text.lower() == '否' or text.lower() == '沒' or text.lower == '不')
 
     def is_going_to_retarded(self, update):
         text = update.message.text
-        return text.lower() == 'b'
+        return ( text.lower() == 'b' or text.lower() == '不' or text.lower() == '不大' or text.lower == '否')
 
     def is_going_to_keepAddress(self, update):
         text = update.message.text
-        return text.lower() == 'a'
+        return ( text.lower() == 'a' or text.lower() == '想' )
 
     def is_going_to_askwhatyoudo(self, update):
         text = update.message.text
-        return text.lower() == 'b'
+        return ( text.lower() == 'b' or text.lower() == '不想' )
 
     def is_going_to_guao(self, update):
         return True
@@ -140,13 +172,36 @@ class TocMachine(Machine):
         pass
 
     def on_enter_askwhy(self, update):
-        update.message.reply_text("為什麼想要爆炸呢？\n(a.) 就只是想炸\n(b.) 心情不好\n(c.) 亦轉身os炸開")
+        update.message.reply_text("為什麼想要爆炸呢？\n(a.)就只是想炸\n(b.)心情不好\n(c.)亦轉身OS炸開")
 
     def on_exit_askwhy(self, update):
         pass
 
+    def on_enter_askmission(self, update):
+        update.message.reply_text("你知道聖戰士的職責嗎？")
+    
+    def on_exit_askmission(self, update):
+        pass
+    
+    def on_enter_tellmission(self, update):
+        update.message.reply_text("以下向你說明：")
+        update.message.reply_text("我們遵從一切可蘭的教導，若遇到難以抉擇的問題，它能指引我們前往正確的道路")
+        update.message.reply_text("穆罕默德是我們唯一的先知，但我們並不崇拜偶像")
+        update.message.reply_text("真主創造了七重天，你在至仁主的造物中，看不出一點參差")
+        update.message.reply_text("至仁主引領我們正確者的路，不是受譴怒者的路，亦非迷誤者的路")
+        update.message.reply_text("可蘭並沒有教導我們暴力，受到壓迫下的我們只能依靠暴力訴諸信仰")
+        update.message.reply_text("暴力雖然不是唯一的解決方式，但它是最簡單且最深植人心的")
+        update.message.reply_text("你現在瞭解了聖戰士大略的職責，請問你還想成為聖戰士嗎？")
+
+    def on_exit_tellmission(self, update):
+        pass
+
     def on_enter_notrasher(self, update):
+        global lock
+        lock = False
         update.message.reply_text("抱歉，我們不提供庸人資源。")
+        if(lock == False):
+            _thread.start_new_thread(my_timer, (self, update))
 
     def on_exit_notrasher(self, update):
         pass
@@ -157,6 +212,12 @@ class TocMachine(Machine):
     def on_exit_askdicision(self, update):
         pass
 
+    def on_enter_askmission(self, update):
+        update.message.reply_text("你瞭解聖戰士的職責嗎？")
+
+    def on_exit_askmisson(self, update):
+        pass
+
     def on_enter_askpressure(self, update):
         update.message.reply_text("真主最擅長治癒病痛了！壓力大嗎？")
 
@@ -164,7 +225,7 @@ class TocMachine(Machine):
         pass
 
     def on_enter_retarded(self, update):
-        update.message.relpy_text("你腦袋有洞？")
+        update.message.reply_text("你腦袋有問題嗎？")
 
     def on_exit_retarded(self, update):
         pass
@@ -176,31 +237,32 @@ class TocMachine(Machine):
         pass
 
     def on_enter_ososos(self, update):
-        update.message.reply_text("這種真主真的沒辦法！但你想炸掉OS老師的腦袋嗎？(a.) 想\n(b.) 不想")
+        update.message.reply_text("這種真主真的沒辦法！但你想炸掉OS老師的腦袋嗎？\n(a.) 想\n(b.) 不想")
 
     def on_exit_ososos(self, update):
         pass
 
     def on_enter_tips(self, update):
-        update.message.reply_text("這邊提供幾個紓壓方式想看哪種？(a.) 破壞\n(b.) 放鬆\n(c.) 自我催眠\n(d.) 其他")
+        update.message.reply_text("這邊提供幾個紓壓方式想看哪種？\n(a.) 破壞\n(b.) 放鬆\n(c.) 自我催眠\n(d.) 其他")
 
     def on_exit_tips(self, update):
         pass
 
     def on_enter_tip1(self, update): ##wait
-        update.message.reply_text("a這個動作可以讓你紓壓嗎？")        
+#        update.message.reply_video(
+        update.message.reply_text("這個動作可以讓你紓壓嗎？")        
 
     def on_exit_tip1(self, update):
         pass
 
     def on_enter_tip2(self, update):
-        update.message.reply_text("b這個動作可以讓你紓壓嗎？")
+        update.message.reply_text("這個動作可以讓你紓壓嗎？")
         
     def on_exit_tip2(self, update):
         pass
 
     def on_enter_tip3(self, update):
-        update.message.reply_text("c這個動作可以讓你紓壓嗎？")          
+        update.message.reply_text("這個動作可以讓你紓壓嗎？")          
 
     def on_exit_tip3(self, update):
         pass
@@ -212,7 +274,8 @@ class TocMachine(Machine):
         pass
 
     def on_enter_guao(self, update):
-        update.message.reply_text("關我屁事？想炸東西再來找我")
+        update.message.reply_text("干我屁事？想炸東西再來找我")
+        update.message.reply_text("掰")
         self.go_back(update)
 
     def on_exit_guao(self, update):
@@ -223,10 +286,141 @@ class TocMachine(Machine):
 
     def on_exit_keepAddress(self, update):
         pass
-
+    
     def on_enter_BePatient(self, update):
-        update.message.reply_text("請耐心等待，稍後完成任務會再提醒您，如果不想被波及的話，建議您先暫時不要去上課！")
+        global lock
+        lock = False
+        update.message.reply_text("請耐心等待，稍後完成任務會再提醒您\n如果不想被波及的話，建議您先暫時不要去上課！")
+        if(lock == False):
+            _thread.start_new_thread(my_timer, (self, update))
 
     def on_exit_BePatient(self, update):
         pass
 
+    def on_enter_user(self, update):
+        update.message.reply_text("已重置對話")
+
+    def on_exit_user(self, update):
+        update.message.reply_text("通常請照著提示回應")
+
+    def on_enter_quiz(self, update):
+        update.message.reply_text("有心想成為聖戰士很好，現在先做個小測驗，請回答a,b...")
+        update.message.reply_text("題目只有10題，合格為正確7題，若想再複習一次，請輸入\n'我想再複習一次教義'")
+        update.message.reply_text("準備好考試再和我說一聲！")
+
+    def on_exit_quiz(self, update):
+        pass
+
+    def on_enter_practice(self, update):
+        update.message.reply_text("以下再次向你說明：")
+        update.message.reply_text("我們遵從一切可蘭的教導，若遇到難以抉擇的問題，它能指引我們前往正確的道路")
+        update.message.reply_text("穆罕默德是我們唯一的先知，但我們並不崇拜偶像")
+        update.message.reply_text("真主創造了七重天，你在至仁主的造物中，看不出一點參差")
+        update.message.reply_text("至仁主引領我們正確者的路，不是受譴怒者的路，亦非迷誤者的路")
+        update.message.reply_text("可蘭並沒有教導我們暴力，受到壓迫下的我們只能依靠暴力訴諸信仰")
+        update.message.reply_text("暴力雖然不是唯一的解決方式，但它是最簡單且最深植人心的")
+        update.message.reply_text("若想知道更深入，請輸入'我想更瞭解教義'，準備好了就提醒我")
+    
+    def on_exit_practice(self, update):
+        pass
+
+    def on_enter_practicemore(self, update):
+        update.message.reply_text("郭")
+        update.message.reply_text("郭")
+        update.message.reply_text("郭")
+        update.message.reply_text("準備好了跟我說一聲")
+
+    def on_exit_practicemore(self,update):
+        pass
+
+    def on_enter_quizstart(self, update):
+        global Correct, counter
+        
+        if(counter == 0):
+            update.message.reply_text("我們聖書是什麼？\n(a.)蘭可經\n(b.)可蘭經\n(c.)杜蘭經")
+        elif(counter == 1):
+            update.message.reply_text("你知道做了爆炸這件事等同你是恐怖份子嗎\n(a.)是\n(b.)否")
+        elif(counter == 2):
+            update.message.reply_text("真主引導我們走向\n(a.)迷誤者的路\n(b.)譴怒者的路\n(c.)正確者的路")
+        elif(counter == 3):
+            update.message.reply_text("你知道爆炸會讓人受傷嗎？\n(a.)是\n(b.)否")
+        elif(counter == 4):
+            update.message.reply_text("成為聖戰士之後不得洩漏任何有關組織的訊息，否則一切福利將被剝奪。\n(a.)知\n(b.)不知")
+        elif(counter == 5):
+            update.message.reply_text("請問穆罕默德是我們的？\n(a.)偶像\n(b.)先知\n(c.)神明")
+        elif(counter == 6):
+            update.message.reply_text("你在執行聖戰士任務時有大機率會死亡，你能承擔這樣的風險嗎？\n(a.)能\n(b.)不能")
+        elif(counter == 7):
+            update.message.reply_text("至仁主創造的是\n(a.)九重天\n(b.)七重天\n(c.)三重天")
+        elif(counter == 8):
+            update.message.reply_text("在你死亡後我們能妥善照顧你的親人，但你的親人可能因死而悲傷，你可以接受嗎？\n(a.)是\n(b.)否")
+        elif(counter == 9):
+            update.message.reply_text("如果有人汙衊我們的教義，你應該做的事是\n(a.)當場打爆他\n(b.)請他吃慶記\n(c.)回家找爸媽\n(d.)灌輸他正確的觀念")
+        elif(counter == 10):
+            update.message.reply_text("伊斯蘭朝聖地為\n(a.)麥加\n(b.)耶路薩冷\n(c.)戴斯蒙\n(d.)麥地納")
+        
+        elif(counter == 11):
+            if(Correct >= 7):
+                self.go_final(update)
+                counter = 0
+                Correct = 0
+            else:
+                self.go_trash(update)
+                counter = 0
+                Correct = 0
+    
+    def on_exit_quizstart(self, update):
+        global Correct, counter
+
+        text = update.message.text
+
+        if(counter == 0):
+            if(text == 'b'):
+                Correct = Correct + 1
+        elif(counter == 1):
+            if(text == 'a'):
+                Correct = Correct + 1
+        elif(counter == 2):
+            if(text == 'c'):
+                Correct = Correct + 1
+        elif(counter == 3):
+            if(text == 'a'):
+                Correct = Correct + 1
+        elif(counter == 4):
+            if(text == 'a'):
+                Correct = Correct + 1
+        elif(counter == 5):
+            if(text == 'b'):
+                Correct = Correct + 1
+        elif(counter == 6):
+            if(text == 'a'):
+                Correct = Correct + 1
+        elif(counter == 7):
+            if(text == 'b'):
+                Correct = Correct + 1
+        elif(counter == 8):
+            if(text == 'a'):
+                Correct = Correct + 1
+        elif(counter == 9):
+            if(text != 'c'):
+                Correct = Correct + 1
+            else:
+                update.message.reply_text("大錯特錯")
+        elif(counter == 10):
+            if(text == 'c'):
+                Correct = Correct + 1
+            else:
+                update.message.reply_text("三個答案你能選到錯的也太強")
+        
+        counter = counter + 1
+
+    def on_enter_final(self, update):
+        global lock
+        lock = False
+        update.message.reply_text("恭喜你合格，現在你是聖戰士了\n稍後會有專人與你聯繫，請等待！！")
+        if(lock == False):
+            _thread.start_new_thread(my_timer, (self, update))
+
+
+    def on_exit_final(self, update):
+        pass
