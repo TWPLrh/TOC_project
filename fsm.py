@@ -3,15 +3,20 @@
 
 #from transitions.extensions import GraphMachine as Machine
 from transitions import Machine
+from google import search # Easy to GoogleSearch
+import random
 import time, _thread
 
-global Correct, counter, lock
+
+url_list = []
+lock = False
 
 def my_timer(self, update):
     global lock
     lock = True
     time.sleep(15)
     self.go_back(update)
+
 
 Correct = 0
 counter = 0
@@ -22,43 +27,10 @@ class TocMachine(Machine):
             model = self,
             **machine_configs
         )
-    """
-    def is_going_to_state1(self, update):
-        text = update.message.text
-        return text.lower() == 'go to state1'
-
-    def is_going_to_state2(self, update):
-        text = update.message.text
-        return text.lower() == 'go to state2'
-
-    def is_going_to_state3(self, update):
-        text = update.message.text
-        return text.lower() == 'go to state3'
-
-    def on_enter_state1(self, update):
-        update.message.reply_text("I'm entering state1")
-        self.go_back(update)
-
-    def on_exit_state1(self, update):
-        update.message.reply_text("???")
-
-    def on_enter_state2(self, update):
-        update.message.reply_text("I'm entering state2")
-        self.go_back(update)
-
-    def on_exit_state2(self, update):
-        update.message.reply_text("e0e0e")
-
-    def on_enter_state3(self, update):
-        update.message.reply_text("I'm entering state3")
-
-    def on_exit_state3(self, update):
-        update.message.reply_text("WLWLW")
-        self.go_back(update)
-    """
+    
     def is_going_to_no1(self, update):
         text = update.message.text
-        return ( text.lower() == 'b' or text.lower() == '不想' or text.lower() == '否' )
+        return text.lower() == 'b' or text.lower() == '不想' or text.lower() == '否'
 
     def is_going_to_no2(self, update):
         text = update.message.text
@@ -78,11 +50,11 @@ class TocMachine(Machine):
 
     def is_going_to_askdicision(self, update):
         text = update.message.text
-        return ( text.lower() == 'a' or text.lower() == '就只是想炸')
+        return ( text.lower() == 'a' or text == '就只是想炸')
 
     def is_going_to_askmission(self, update):
         text = update.message.text 
-        return ( text.lower () == 'a' or text.lower() == '是' or text.lower() == '知' or text.lower== '有')
+        return ( text.lower () == 'a' or text == '是' or text == '知' or text == '有')
 
     def is_going_to_tellmission(self, update):
         text = update.message.text
@@ -110,27 +82,27 @@ class TocMachine(Machine):
 
     def is_going_to_OS(self, update):
         text = update.message.text
-        return (text.lower() == 'c' or text.lower() == '亦轉身OS爆開')
+        return (text.lower() == 'c' or text.lower() == '一轉身OS爆開')
 
     def is_going_to_tips(self, update):
         text = update.message.text
-        return ( text.lower() == 'a' or text.lower == '是' or text.lower == '大')
+        return (text.lower() == 'a' or text == "是" or text == "大")
 
     def is_going_to_tip1(self, update):
         text = update.message.text
-        return text.lower() == 'a'
+        return (text.lower() == 'a' or text == '破壞')
 
     def is_going_to_tip2(self, update):
         text = update.message.text
-        return text.lower() == 'b'
+        return (text.lower() == 'b' or text == '放鬆')
 
     def is_going_to_tip3(self, update):
         text = update.message.text
-        return text.lower() == 'c'
+        return (text.lower() == 'c' or text == '自我催眠')
 
     def is_going_to_another(self, update):
         text = update.message.text
-        return ( text.lower() == 'd' or text.lower() == '否' or text.lower() == '沒' or text.lower == '不')
+        return ( text.lower() == 'd' or text == '否' or text == '沒' or text == '不' or text == '其他')
 
     def is_going_to_retarded(self, update):
         text = update.message.text
@@ -146,6 +118,8 @@ class TocMachine(Machine):
 
     def is_going_to_guao(self, update):
         return True
+#        text = update.message.text
+#        return (text == '滿意' or text == '是' or text == '可以' or text.lower() == 'a')
 
     def on_enter_ask(self, update):
         update.message.reply_text("Allakhuaguak！想來一場轟轟烈烈的大爆炸嗎？\n(a.)想\n(b.)不想")
@@ -172,7 +146,7 @@ class TocMachine(Machine):
         pass
 
     def on_enter_askwhy(self, update):
-        update.message.reply_text("為什麼想要爆炸呢？\n(a.)就只是想炸\n(b.)心情不好\n(c.)亦轉身OS炸開")
+        update.message.reply_text("為什麼想要爆炸呢？\n(a.)就只是想炸\n(b.)心情不好\n(c.)一轉身OS炸開")
 
     def on_exit_askwhy(self, update):
         pass
@@ -207,7 +181,7 @@ class TocMachine(Machine):
         pass
 
     def on_enter_askdicision(self, update):
-        update.message.reply_text("你擁有成為聖戰士的決心嗎？")
+        update.message.reply_text("你是否擁有成為聖戰士的決心嗎？")
 
     def on_exit_askdicision(self, update):
         pass
@@ -243,7 +217,7 @@ class TocMachine(Machine):
         pass
 
     def on_enter_tips(self, update):
-        update.message.reply_text("這邊提供幾個紓壓方式想看哪種？\n(a.) 破壞\n(b.) 放鬆\n(c.) 自我催眠\n(d.) 其他")
+        update.message.reply_text("這邊提供幾個紓壓方式想看哪種？\n(a.)破壞\n(b.)放鬆\n(c.)自我催眠\n(d.)其他")
 
     def on_exit_tips(self, update):
         pass
@@ -268,7 +242,7 @@ class TocMachine(Machine):
         pass
 
     def on_enter_another(self, update):
-        update.message.reply_text("那你需要什麼協助？")
+        update.message.reply_text("那你需要什麼協助？我可以幫你搜尋")
 
     def on_exit_another(self, update):
         pass
@@ -279,7 +253,8 @@ class TocMachine(Machine):
         self.go_back(update)
 
     def on_exit_guao(self, update):
-        pass
+        global url_list
+        del url_list[:]
 
     def on_enter_keepAddress(self, update):
         update.message.reply_text("我真的替你生氣，我這邊直接開炸，請問詳細資料是？")
@@ -325,9 +300,8 @@ class TocMachine(Machine):
         pass
 
     def on_enter_practicemore(self, update):
-        update.message.reply_text("郭")
-        update.message.reply_text("郭")
-        update.message.reply_text("郭")
+        update.message.reply_text("這裡提供你網址，各種資訊都在這")
+        update.message.reply_text("http://www.islam.org.hk/")
         update.message.reply_text("準備好了跟我說一聲")
 
     def on_exit_practicemore(self,update):
@@ -366,6 +340,7 @@ class TocMachine(Machine):
                 Correct = 0
             else:
                 self.go_trash(update)
+                update.message.reply_text("不合格")
                 counter = 0
                 Correct = 0
     
@@ -407,7 +382,7 @@ class TocMachine(Machine):
             else:
                 update.message.reply_text("大錯特錯")
         elif(counter == 10):
-            if(text == 'c'):
+            if(text != 'c'):
                 Correct = Correct + 1
             else:
                 update.message.reply_text("三個答案你能選到錯的也太強")
@@ -423,4 +398,56 @@ class TocMachine(Machine):
 
 
     def on_exit_final(self, update):
+        pass
+    
+    def newsearch(self, update):
+        text = update.message.text
+        if ( text == '可以' or text == '繼續'):
+            return False
+        else:
+            return True
+
+    def guaola(self, update):
+        text = update.message.text
+        return text == '可以'
+
+    def oldsearch(self, update):
+        text = update.message.text
+        return text == '繼續'
+
+    def on_enter_WebSearch(self, update):
+        global url_list
+        del url_list[:]
+
+        text = update.message.text
+
+        for url in search(text, stop = 10):
+            url_list.append(url)
+
+        k = random.randint(0, 10)
+        
+        update.message.reply_text(url_list[k])
+        url_list.remove(url_list[k])
+        update.message.reply_text("這次搜尋結果你滿意嗎？")
+        update.message.reply_text("若覺得可以請輸入'可以'")
+        update.message.reply_text("還想要搜尋其他的請輸入你想搜尋的內容")
+        update.message.reply_text("若想繼續搜索當前內容請輸入'繼續'")
+
+    def on_exit_WebSearch(self, update):
+        pass
+
+    def on_enter_OldSearch(self, update):
+        global url_list
+
+        p = len(url_list)
+        k = random.randint(0, p)
+        update.message.reply_text(url_list[k])
+        url_list.remove(url_list[k])
+
+        update.message.reply_text("這次搜尋的結果你滿意嗎？")
+        update.message.reply_text("若覺得可以請輸入'可以'")
+        update.message.reply_text("若想要搜尋其他內容請輸入你想搜尋的內容")
+        update.message.reply_text("若想繼續搜索當前內容請輸入'繼續'")
+
+    def on_exit_OldSearch(self, update):
         pass

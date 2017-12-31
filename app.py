@@ -15,9 +15,9 @@ bot = telegram.Bot(token=API_TOKEN)
 machine = TocMachine(
     states=[
 
-#        'state1',
-#        'state2',
-#        'state3',
+        'WebSearch',
+            'NewSearch',
+            'OldSearch',
             
         'user',
         'notrasher',
@@ -55,34 +55,60 @@ machine = TocMachine(
     ],
 
     transitions=[
+
+        {
+            'trigger' : 'advance',
+            'source' : 'another',
+            'dest' : 'WebSearch',
+            'conditions' :'newsearch'
+        },
+
+        {
+            'trigger' : 'advance',
+            'source' : 'WebSearch',
+            'dest' : 'WebSearch',
+            'conditions' : 'newsearch'
+        },
+
+        {
+            'trigger' : 'advance',
+            'source' : 'WebSearch',
+            'dest' : 'guao',
+            'conditions' : 'guaola'
+        },
+
+        {
+            'trigger' : 'advance',
+            'source' : 'WebSearch',
+            'dest' : 'OldSearch',
+            'conditions' : 'oldsearch'
+        },
+
+        {
+            'trigger' : 'advance',
+            'source' : 'OldSearch',
+            'dest' : 'OldSearch',
+            'conditions' : 'oldsearch'
+        },
+
+        {
+            'trigger' : 'advance',
+            'source' : 'OldSearch',
+            'dest' : 'guao',
+            'conditions' : 'guaola'
+        },
+
+        {
+            'trigger' : 'advance',
+            'source' : 'OldSearch',
+            'dest' : 'WebSearch',
+            'conditions' : 'newsearch'
+        },
+
               
-#        {
-#            'trigger': 'advance',
-#            'source': 'user',
-#            'dest': 'state1',
-#            'conditions': 'is_going_to_state1'
-#        },
-
-#        {
-#            'trigger': 'advance',
-#            'source': 'user',
-#            'dest': 'state2',
-#            'conditions': 'is_going_to_state2'
-#        },
-        
-#        {
-#            'trigger':'advance',
-#            'source': 'state1',
-#            'dest': 'state3',
-#            'conditions': 'is_going_to_state3'
-#        },
-        
-
         {
             'trigger': 'go_back',
             'source': [
-#                'state1',
-#                'state2',
                 'guao',
                 'BePatient',
                 'notrasher',
