@@ -1,8 +1,8 @@
 #!usr/bin/env python
 #coding=utf-8
 
-#from transitions.extensions import GraphMachine as Machine
-from transitions import Machine
+from transitions.extensions import GraphMachine as Machine
+#from transitions import Machine
 from google import search # Easy to GoogleSearch
 import random
 import time, _thread
