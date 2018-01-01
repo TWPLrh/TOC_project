@@ -211,7 +211,7 @@ class TocMachine(Machine):
         pass
 
     def on_enter_ososos(self, update):
-        update.message.reply_text("這種真主真的沒辦法！但你想炸掉OS老師的腦袋嗎？\n(a.) 想\n(b.) 不想")
+        update.message.reply_text("這種真主真的沒辦法！但你想炸掉OS老師的腦袋嗎？\n(a.)想\n(b.)不想")
 
     def on_exit_ososos(self, update):
         pass
@@ -284,10 +284,11 @@ class TocMachine(Machine):
         pass
 
     def on_enter_user(self, update):
-        update.message.reply_text("已重置對話")
+        update.message.reply_text("已重置對話\n想看提示輸入 'note',\n想跳入 search 功能請輸入 'search'\n想進入主要功能請輸入 'main'")
 
     def on_exit_user(self, update):
-        update.message.reply_text("通常請照著提示回應")
+        pass
+#        update.message.reply_text("通常請照著提示回應")
 
     def on_enter_quiz(self, update):
         update.message.reply_text("有心想成為聖戰士很好，現在先做個小測驗，請回答a,b...")
@@ -462,3 +463,37 @@ class TocMachine(Machine):
 
     def on_exit_OldSearch(self, update):
         pass
+
+    def toNote(self, update):
+        text = update.message.text
+        return text.lower() == 'note'
+
+    def on_enter_note(self, update):
+        update.message.reply_text("大部分都有回覆提示")
+        update.message.reply_text("如果沒有的就照著直覺回復就可以了")
+        update.message.reply_text("這只是個玩笑的bot，FBI別關注我拜託")
+        self.go_back(update)
+
+    def on_exit_note(self, update):
+        pass
+
+    def goSearch(self, update):
+        text = update.message.text
+        return text == 'search'
+    
+    def goMain(self, update):
+        text = update.message.text
+        return text.lower() == 'main'
+
+    def on_enter_jpsearch(self, update):
+        update.message.reply_text("請直接輸入你想搜尋的內容")
+
+    def on_exit_jpsearch(self, update):
+        pass
+
+    def recur(self, update):
+        text = update.message.text
+        if(text.lower() == 'search' or text.lower() == 'main' or text.lower() == 'note'):
+            return False
+        else:
+            return True

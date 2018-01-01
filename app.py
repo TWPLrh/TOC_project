@@ -8,7 +8,7 @@ from flask import Flask, request, send_file
 from fsm import TocMachine
 
 API_TOKEN = '470479128:AAENFEglNPFqsFFAGzBKbLL6xR3G8QcjulI'
-WEBHOOK_URL = 'https://36b336ec.ngrok.io/mybot'
+WEBHOOK_URL = 'https://d64d9c1f.ngrok.io/mybot'
 
 app = Flask(__name__)
 bot = telegram.Bot(token=API_TOKEN)
@@ -16,10 +16,12 @@ machine = TocMachine(
     states=[
 
         'WebSearch',
-#            'NewSearch',
             'OldSearch',
             
         'user',
+            'note',
+            'jpsearch',
+            
         'notrasher',
 
         'ask',
@@ -42,7 +44,7 @@ machine = TocMachine(
                         'tip1',
                         'tip2',
                         'tip3',
-                        'another',
+                            'another',
 
                     'retarded',
                         'askwhatyoudo',
@@ -55,6 +57,33 @@ machine = TocMachine(
     ],
 
     transitions=[
+
+        {
+            'trigger' : 'advance',
+            'source' : 'user',
+            'dest' : 'user',
+            'conditions' : 'recur'
+        },
+
+        {
+            'trigger' : 'advance',
+            'source' : 'user',
+            'dest' : 'note',
+            'conditions' : 'toNote'
+        },
+
+        {
+            'trigger' : 'advance',
+            'source' : 'user',
+            'dest' : 'jpsearch',
+            'conditions' : 'goSearch'
+        },
+
+        {
+            'trigger' : 'advance',
+            'source' : 'jpsearch',
+            'dest' : 'WebSearch',
+        },
 
         {
             'trigger' : 'advance',
@@ -113,6 +142,7 @@ machine = TocMachine(
                 'BePatient',
                 'notrasher',
                 'final',
+                'note',
             ],
             'dest': 'user'
         },
@@ -121,6 +151,7 @@ machine = TocMachine(
             'trigger': 'advance',
             'source': 'user',
             'dest': 'ask',
+            'conditions' : 'goMain',
         },
 
         {
@@ -356,7 +387,7 @@ machine = TocMachine(
             'trigger' : 'advance',
             'source' : 'retarded',
             'dest' : 'askwhatyoudo',
-            'conditions' : 'is_going_to_askwhatyoudo'
+#            'conditions' : 'is_going_to_askwhatyoudo'
         },
 
         {
