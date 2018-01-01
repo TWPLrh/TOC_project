@@ -30,23 +30,23 @@ class TocMachine(Machine):
     
     def is_going_to_no1(self, update):
         text = update.message.text
-        return text.lower() == 'b' or text.lower() == '不想' or text.lower() == '否'
+        return text.lower() == 'b' or text == '不想' or text == '否'
 
     def is_going_to_no2(self, update):
         text = update.message.text
-        return ( text.lower() == 'b' or text.lower() == '不想' or text.lower() == '否')
+        return ( text.lower() == 'b' or text == '不想' or text == '否')
 
     def is_going_to_no3(self, update):
         text = update.message.text
-        return ( text.lower() == 'b' or text.lower() == '不想' or text.lower() == '否')
+        return ( text.lower() == 'b' or text == '不想' or text == '否')
 
     def is_going_to_askwhy(self, update):
         text = update.message.text
-        return ( text.lower() == 'a' or text.lower() == '想' or text.lower() == '是')
+        return ( text.lower() == 'a' or text == '想' or text == '是')
 
     def is_going_to_notrasher(self, update):
         text = update.message.text
-        return ( text.lower() == 'b' or text.lower() == '不想' or text.lower() == '否' )
+        return ( text.lower() == 'b' or text == '不想' or text == '否' )
 
     def is_going_to_askdicision(self, update):
         text = update.message.text
@@ -58,15 +58,15 @@ class TocMachine(Machine):
 
     def is_going_to_tellmission(self, update):
         text = update.message.text
-        return ( text.lower () == 'b' or text.lower() == '否')
+        return ( text.lower () == 'b' or text == '否')
 
     def is_going_to_quiz(self, update):
         text = update.message.text
-        return ( text.lower () == 'a' or text.lower() == '是' or text.lower() == '想')
+        return ( text.lower () == 'a' or text == '是' or text == '想')
 
     def is_going_to_practice(self, update):
         text = update.message.text
-        return (text.lower () == '我想再複習一次教義')
+        return (text == '我想再複習一次教義')
 
     def is_going_to_practicemore(self, update):
         text = update.message.text
@@ -78,7 +78,7 @@ class TocMachine(Machine):
 
     def is_going_to_askpressure(self, update):
         text = update.message.text
-        return (text.lower() == 'b' or text.lower() == '心情不好')
+        return (text.lower() == 'b' or text == '心情不好')
 
     def is_going_to_OS(self, update):
         text = update.message.text
@@ -106,15 +106,15 @@ class TocMachine(Machine):
 
     def is_going_to_retarded(self, update):
         text = update.message.text
-        return ( text.lower() == 'b' or text.lower() == '不' or text.lower() == '不大' or text.lower == '否')
+        return ( text.lower() == 'b' or text == '不' or text == '不大' or text == '否')
 
     def is_going_to_keepAddress(self, update):
         text = update.message.text
-        return ( text.lower() == 'a' or text.lower() == '想' )
+        return ( text.lower() == 'a' or text == '想' )
 
     def is_going_to_askwhatyoudo(self, update):
         text = update.message.text
-        return ( text.lower() == 'b' or text.lower() == '不想' )
+        return ( text.lower() == 'b' or text == '不想' )
 
     def is_going_to_guao(self, update):
         return True
