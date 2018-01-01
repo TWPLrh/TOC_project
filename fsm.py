@@ -54,7 +54,7 @@ class TocMachine(Machine):
 
     def is_going_to_askmission(self, update):
         text = update.message.text 
-        return ( text.lower () == 'a' or text == '是' or text == '知' or text == '有')
+        return ( text.lower () == 'a' or text == '是' or text == '知' or text == '有' or text == '知道' or text == '瞭解' or text == '了解')
 
     def is_going_to_tellmission(self, update):
         text = update.message.text
@@ -82,7 +82,7 @@ class TocMachine(Machine):
 
     def is_going_to_OS(self, update):
         text = update.message.text
-        return (text.lower() == 'c' or text.lower() == '一轉身OS爆開')
+        return (text.lower() == 'c' or text == '一轉身OS爆開')
 
     def is_going_to_tips(self, update):
         text = update.message.text
@@ -90,19 +90,19 @@ class TocMachine(Machine):
 
     def is_going_to_tip1(self, update):
         text = update.message.text
-        return (text.lower() == 'a' or text == '破壞')
+        return (text.lower() == 'a' or text == '音樂')
 
     def is_going_to_tip2(self, update):
         text = update.message.text
-        return (text.lower() == 'b' or text == '放鬆')
+        return (text.lower() == 'b' or text == '動物')
 
     def is_going_to_tip3(self, update):
         text = update.message.text
-        return (text.lower() == 'c' or text == '自我催眠')
+        return (text.lower() == 'c' or text == '地獄梗')
 
     def is_going_to_another(self, update):
         text = update.message.text
-        return ( text.lower() == 'd' or text == '否' or text == '沒' or text == '不' or text == '其他')
+        return ( text.lower() == 'd' or text == '不行' or text == '否' or text == '沒' or text == '不' or text == '其他')
 
     def is_going_to_retarded(self, update):
         text = update.message.text
@@ -146,7 +146,7 @@ class TocMachine(Machine):
         pass
 
     def on_enter_askwhy(self, update):
-        update.message.reply_text("為什麼想要爆炸呢？\n(a.)就只是想炸\n(b.)心情不好\n(c.)一轉身OS炸開")
+        update.message.reply_text("為什麼想要爆炸呢？\n(a.)就只是想炸\n(b.)心情不好\n(c.)一轉身OS爆開")
 
     def on_exit_askwhy(self, update):
         pass
@@ -217,26 +217,37 @@ class TocMachine(Machine):
         pass
 
     def on_enter_tips(self, update):
-        update.message.reply_text("這邊提供幾個紓壓方式想看哪種？\n(a.)破壞\n(b.)放鬆\n(c.)自我催眠\n(d.)其他")
+        update.message.reply_text("推薦你幾種紓壓方式，想看哪個？\n(a.)音樂\n(b.)動物\n(c.)地獄梗\n(d.)其他")
 
     def on_exit_tips(self, update):
         pass
 
     def on_enter_tip1(self, update): ##wait
-#        update.message.reply_video(
-        update.message.reply_text("這個動作可以讓你紓壓嗎？")        
+        update.message.reply_text("https://www.youtube.com/watch?v=C14oQ3zSTnA")
+        update.message.reply_text("https://www.youtube.com/watch?v=o7iL2KzDh38")
+        update.message.reply_text("https://www.youtube.com/watch?v=kqCdbl0ic9k")
+        update.message.reply_text("這幾首歌可以讓你紓壓嗎？")        
 
     def on_exit_tip1(self, update):
         pass
 
     def on_enter_tip2(self, update):
-        update.message.reply_text("這個動作可以讓你紓壓嗎？")
+        update.message.reply_text("準備圖檔中，請稍等 ..")
+        update.message.reply_document(open("./img/001.gif", 'rb'), timeout = 20)
+        update.message.reply_document(open("./img/002.gif", 'rb'), timeout = 20)
+        update.message.reply_document(open("./img/003.gif", 'rb'), timeout = 20)
+        update.message.reply_text("這些貓咪可以讓你紓壓嗎？")
         
     def on_exit_tip2(self, update):
         pass
 
     def on_enter_tip3(self, update):
-        update.message.reply_text("這個動作可以讓你紓壓嗎？")          
+        update.message.reply_text("準備圖檔中，請稍等 ..")
+        update.message.reply_photo(open("./img/001.jpg", 'rb'), timeout = 20)
+        update.message.reply_photo(open("./img/002.PNG", 'rb'), timeout = 20)
+        update.message.reply_photo(open("./img/003.JPG", 'rb'), timeout = 20)
+        update.message.reply_photo(open("./img/004.JPG", 'rb'), timeout = 20)       
+        update.message.reply_text("這些梗圖可以讓你紓壓嗎？")          
 
     def on_exit_tip3(self, update):
         pass

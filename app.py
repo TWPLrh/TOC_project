@@ -8,7 +8,7 @@ from flask import Flask, request, send_file
 from fsm import TocMachine
 
 API_TOKEN = '470479128:AAENFEglNPFqsFFAGzBKbLL6xR3G8QcjulI'
-WEBHOOK_URL = 'https://a877a4a1.ngrok.io/mybot'
+WEBHOOK_URL = 'https://36b336ec.ngrok.io/mybot'
 
 app = Flask(__name__)
 bot = telegram.Bot(token=API_TOKEN)
@@ -16,7 +16,7 @@ machine = TocMachine(
     states=[
 
         'WebSearch',
-            'NewSearch',
+#            'NewSearch',
             'OldSearch',
             
         'user',
