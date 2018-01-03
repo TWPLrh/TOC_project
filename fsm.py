@@ -1,8 +1,10 @@
 #!usr/bin/env python
 #coding=utf-8
 
-from transitions.extensions import GraphMachine as Machine
-#from transitions import Machine
+#for final update
+
+#from transitions.extensions import GraphMachine as Machine
+from transitions import Machine
 from google import search # Easy to GoogleSearch
 import random
 import time, _thread
@@ -472,6 +474,7 @@ class TocMachine(Machine):
         update.message.reply_text("大部分都有回覆提示")
         update.message.reply_text("如果沒有的就照著直覺回復就可以了")
         update.message.reply_text("這只是個玩笑的bot，FBI別關注我拜託")
+        update.message.reply_document(open("README.md",'rb'))
         self.go_back(update)
 
     def on_exit_note(self, update):

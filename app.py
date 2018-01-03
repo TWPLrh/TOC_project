@@ -1,4 +1,6 @@
 
+#for final update
+
 import sys
 from io import BytesIO
 
@@ -8,7 +10,7 @@ from flask import Flask, request, send_file
 from fsm import TocMachine
 
 API_TOKEN = '470479128:AAENFEglNPFqsFFAGzBKbLL6xR3G8QcjulI'
-WEBHOOK_URL = 'https://d64d9c1f.ngrok.io/mybot'
+WEBHOOK_URL = 'https://65775861.ngrok.io/mybot'
 
 app = Flask(__name__)
 bot = telegram.Bot(token=API_TOKEN)
@@ -235,7 +237,6 @@ machine = TocMachine(
             'source' : 'askdicision',
             'dest' : 'notrasher',
             'conditions': 'is_going_to_notrasher'
-
         },
 
         {
@@ -392,12 +393,6 @@ machine = TocMachine(
 
         {
             'trigger' : 'advance',
-            'source' : 'askwhatyoudo',
-            'dest' : 'guao',
-        },
-
-        {
-            'trigger' : 'advance',
             'source' : 'tips',
             'dest' : 'tip1',
             'conditions' : 'is_going_to_tip1'
@@ -419,60 +414,30 @@ machine = TocMachine(
 
         {
             'trigger' : 'advance',
-            'source' : 'tips',
-            'dest' : 'another',
-            'conditions' : 'is_going_to_another'
-        },
-
-        {
-            'trigger' : 'advance',
-            'source' : 'tip1',
-            'dest' : 'another',
-            'conditions' : 'is_going_to_another'
-        },
-
-        {
-            'trigger' : 'advance',
-            'source' : 'tip2',
-            'dest' : 'another',
-            'conditions' : 'is_going_to_another'
-        },
-        
-        {
-            'trigger' : 'advance',
-            'source' : 'tip3',
+            'source' : ['tips',
+                'tip1',
+                'tip2',
+                'tip3',
+                ],
             'dest' : 'another',
             'conditions' : 'is_going_to_another'
         },
 
         {
             'trigger':'advance',
-            'source' : 'tip1',
-            'dest' : 'guao'
-        },
-
-        {
-            'trigger':'advance',
-            'source' : 'tip2',
-            'dest' : 'guao'
-        },
-
-        {
-            'trigger':'advance',
-            'source' : 'tip3',
-            'dest' : 'guao'
-        },
-
-        {
-            'trigger' : 'advance',
-            'source' : 'another',
+            'source' : ['tip1',
+                    'tip2',
+                    'tip3',
+                    'another',
+                    'askwhatyoudo',
+                    ],
             'dest' : 'guao'
         },
 
     ],
     initial='user',
-    auto_transitions=False,
-    show_conditions=True,
+#    auto_transitions=False,
+#    show_conditions=True,
 )
 
 
