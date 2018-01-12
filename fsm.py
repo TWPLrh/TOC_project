@@ -475,7 +475,7 @@ class TocMachine(Machine):
         update.message.reply_text("如果沒有的就照著直覺回復就可以了")
         update.message.reply_text("這只是個玩笑的bot，FBI別關注我拜託")
         update.message.reply_document(open("README.md",'rb'))
-        self.go_back(update)
+#        self.go_back(update)
 
     def on_exit_note(self, update):
         pass
@@ -500,3 +500,10 @@ class TocMachine(Machine):
             return False
         else:
             return True
+
+    def goNote(self, update):
+        text = update.message.text
+        return text == 'note'
+        
+    def on_enter_note2(self, update):
+        update.message.reply_text("note2")

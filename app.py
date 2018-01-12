@@ -10,7 +10,7 @@ from flask import Flask, request, send_file
 from fsm import TocMachine
 
 API_TOKEN = '470479128:AAENFEglNPFqsFFAGzBKbLL6xR3G8QcjulI'
-WEBHOOK_URL = 'https://65775861.ngrok.io/mybot'
+WEBHOOK_URL = 'https://29756dce.ngrok.io/mybot'
 
 app = Flask(__name__)
 bot = telegram.Bot(token=API_TOKEN)
@@ -22,6 +22,7 @@ machine = TocMachine(
             
         'user',
             'note',
+            'note2',
             'jpsearch',
             
         'notrasher',
@@ -59,6 +60,13 @@ machine = TocMachine(
     ],
 
     transitions=[
+
+        {
+            'trigger' : 'advance',
+            'source' : 'note',
+            'dest' : 'note2',
+            'conditions' : 'goNote'
+        },
 
         {
             'trigger' : 'advance',
